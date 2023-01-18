@@ -1,5 +1,5 @@
-# author: Larissa Munishkina
-# date: Mar 27, 2022
+# author: Pranav Jha
+# date: Jan 17, 2023
 # file: test_hangman.py tests a hangman.py
 # input: file 'dictionary_short.txt'
 # output: possible assertion errors
