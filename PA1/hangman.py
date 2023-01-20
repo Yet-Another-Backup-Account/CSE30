@@ -24,11 +24,11 @@ def game_reset():
     lives_lost = 0                
 
 def interface(guess_list, blanklist, olist):
-    guesses = ' '.join(word.upper() for word in guess_list)
-    blanks = ' '.join(blank for blank in blanklist)
+    guesses = ', '.join(word.upper() for word in guess_list)
+    blanks = '  '.join(blank for blank in blanklist)
     o = ''.join(o for o in olist)
     print(f'Letters chosen: {guesses}')
-    print(f'{blanks}    lives: {lives} {o}')
+    print(f'{blanks}   lives: {lives} {o}')
 
 # make a dictionary from a dictionary file ('dictionary.txt', see above)
 # dictionary keys are word sizes (1, 2, 3, 4, …, 12), and values are lists of words
@@ -66,16 +66,17 @@ def print_dictionary (dictionary) :
 # get options size and lives from the user, use try-except statements for wrong input
 def get_game_options () :
     try:
-        size = int(input("Please choose a size of a word to be guessed [3 – 12, default any size]: "))
+        size = int(input("Please choose a size of a word to be guessed [3 – 12, default any size]:"))
+        assert size in dictionary.keys()
     except:
         size = choice(list(range(3, 13)))
-    print(f'The word size is set to {size}.')
+    print(f'\nThe word size is set to {size}.')
     try:
-        lives = int(input("Please choose a number of lives [1 – 10, default 5]: "))
+        lives = int(input("Please choose a number of lives [1 – 10, default 5]:"))
         assert int(lives) > 0
     except:
         lives = 5
-    print(f'You have {lives} lives.')
+    print(f'\nYou have {lives} lives.')
     return size, lives
 
 # MAIN
@@ -117,6 +118,7 @@ if __name__ == '__main__' :
                 else:
                     break
             except:
+                print()
                 if guess in guess_list:
                     print('You have already chosen this letter.')
 
@@ -129,23 +131,23 @@ if __name__ == '__main__' :
         # also check if the user guesses the word correctly or lost all lives,
         # if yes finish the game
         if guess.lower() in word.lower():
-            print("You guessed right!")
+            print("\nYou guessed right!")
             for index, letter in enumerate(list(word.lower())):
                 if letter == guess:
-                    blanklist[index] = letter
+                    blanklist[index] = letter.upper()
         else:
             lives -= 1
             olist[lives_lost] = 'X'
             lives_lost += 1
-            print("You guessed wrong, you lost one life.")
+            print("\nYou guessed wrong, you lost one life.")
                 
-
         # END GAME LOOP   (INNER PROGRAM LOOP)
 
         # ask if the user wants to continue playing.
         # if yes start a new game, otherwise terminate the program
         if '__' not in blanklist or lives == 0:
             if '__' not in blanklist:
+                interface(guess_list, blanklist, olist)
                 print(f'Congratulations!!! You won! The word is {word.upper()}!')
                 replay = input("Would you like to play again [Y/N]? ")
                 if replay.lower() == 'y':
@@ -153,9 +155,10 @@ if __name__ == '__main__' :
                     game_reset()
                     continue
                 else:
-                    print('Goodbye!')
+                    print('\nGoodbye!')
                     break
             elif lives == 0:
+                interface(guess_list, blanklist, olist)
                 print(f'You lost! The word is {word.upper()}!')
                 replay = input("Would you like to play again [Y/N]? ")
                 if replay.lower() == 'y':
@@ -163,7 +166,7 @@ if __name__ == '__main__' :
                     game_reset()
                     continue
                 else:
-                    print('Goodbye!')
+                    print('\nGoodbye!')
                     break
 
     # END MAIN LOOP (OUTER PROGRAM LOOP)
